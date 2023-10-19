@@ -26,7 +26,9 @@ int main(void)
 		}
 
 		/* Remove the newline character */
-		size_t insert_length = strlen(insert);
+		size_t insert_length; /* Declaration */
+
+		insert_length = strlen(insert); /* Code */
 
 		if (insert_length > 0 && insert[insert_length - 1] == '\n')
 		{
@@ -34,7 +36,9 @@ int main(void)
 		}
 
 		/* Use the input as the command to execute */
-		int result = system(insert);
+		int result; /* Declaration */
+
+		result = system(insert); /* Code */
 
 		if (result == -1)
 		{
