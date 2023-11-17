@@ -1,51 +1,51 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#define MAX_INPUT_SIZE 1024
+#include "main.h"
 
 /**
- * main - A program for a simple shell
+ * main - Simple shell function
+ * @ac: Argument count
+ * @av: Array of argument
+ * @env_var: Env variable
  *
- * Return: 0 SUCCESS
+ * Return: Result
  */
-int main(void)
+int main(int __attribute__((unused)) ac, char **av, char **env_var)
 {
-	char insert[MAX_INPUT_SIZE];
+	char *user_cmd = NULL, **args = NULL;
+	int check_exit = 0, o_res = 0;
+	int proc_ = 0;
 
 	while (1)
 	{
-		/* Display the prompt and wait for user input */
-		printf("simple_shell> ");
-
-		if (fgets(insert, MAX_INPUT_SIZE, stdin) == NULL)
+		user_cmd = get_input();
+		if (!user_cmd)
 		{
-			/* Handle "end of file" (Ctrl+D) */
-			/* printf("\n"); */
-			break;
+			if (isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n", 1);
+			exit(check_exit);
 		}
-
-		/* Remove the newline character */
-		size_t insert_length; /* Declaration */
-
-		insert_length = strlen(insert); /* Code */
-
-		if (insert_length > 0 && insert[insert_length - 1] == '\n')
+		else
 		{
-			insert[insert_length - 1] = '\0';
+			proc_++;
+			args = tokenizer(user_cmd);
+			if (!args)
+			{
+				free(args);
+				continue;
+			}
+			check_exit = support_func(args, user_cmd, check_exit,
+						   env_var, av[0]);
+			if (check_exit == -1)
+			{
+				o_res = path_handler(&args[0], env_var);
+				check_exit = exe_func(args, av, env_var,
+						      user_cmd, o_res,
+						      proc_);
+				if (o_res == 0)
+					free(args[0]);
+			}
+			free(args);
 		}
-
-		/* Use the input as the command to execute */
-		int result; /* Declaration */
-
-		result = system(insert); /* Code */
-
-		if (result == -1)
-		{
-			/* Handle the case when the executable is not found */
-			printf("Command not found: %s\n", insert);
-		}
+		free(user_cmd);
 	}
-
-	return (0);
+	return (check_exit);
 }
