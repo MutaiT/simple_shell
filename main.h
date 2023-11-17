@@ -1,9 +1,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#define EXIT WIFEXITED
-#define STATUS WEXITSTATUS
-
+/*libraries*/
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -14,44 +12,43 @@
 #include <sys/stat.h>
 #include <limits.h>
 
+/* definations */
+#define EXIT WIFEXITED
+#define STATUS WEXITSTATUS
 
-/* function prototypes */
-char *_getline(void);
-void handle_exit(char **command, char *input, int _exit);
-void handle_env(char **env);
-char **get_token(char *input);
+/* prototype functions */
+char *get_input(void);
+void exit_command(char **token, char *line, int done);
+void env_check(char **env_var);
+char *path_finder(char **env_var);
+int path_handler(char **token, char **env_var);
+char **tokenizer(char *args);
+unsigned int delimeter_check(char ch, const char *s);
+char *str_tok(char *s, const char *mark);
+void cd_func(char **input, char *prog_nm);
+void unset_env(char **tok_command);
+void set_env(char **tok_command);
+void replacement_check(char **input, int check_exit);
+void echo_check(char **input, int check_exit, char **env_var);
+int support_func(char **input, char *variable, int check_exit,
+                 char **env_var, char *args);
+int exe_func(char **input, char **args, char **env_var, char *command, int loc_output,
+             int pid);
+void output_err(char *identifier, int pid, char *input);
 
-char *get_path(char **env);
-int handle_path(char **command, char **env);
-int execute(char **command, char **av, char **env, char *input, int path_ret,
-	    int process_num);
+/* string prototype functions */
+int str_cmp(char *str1, char *str2);
+int str_len(char *s);
+size_t str_bytecmp(char *str1, char *str2, size_t nmbr);
+char *str_cat(char *to, char *from);
+char *str_cpy(char *to, char *from);
+int func_atoi(char *str);
+void func_itoa(int p, char *s, int station);
+void str_rev(char *s);
+char *str_dup(const char *s);
 
-int handle_other(char **command, char *user_input, int exit_status,
-		 char **env, char *av);
-void handle_echo(char **command, int exit_status, char **env);
-void change_dir(char **command, char *av);
-void handle_replacement(char **command, int exit_status);
-
-void handle_setenv(char **input_toks);
-void handle_unsetenv(char **input_toks);
-
-/* string functions */
-int _strcmp(char *s1, char *s2);
-char *_strtok(char *str, const char *delim);
-int _strlen(char *str);
-size_t _strncmp(char *s1, char *s2, size_t n);
-
-char *_strcat(char *dest, char *src);
-char *_strcpy(char *dest, char *src);
-int _atoi(char *s);
-void _itoa(int n, char *str, int base);
-
-void rev_string(char *str);
-char *_strdup(const char *str);
-
-/* print functions */
-int _putchar(char c);
-int _puts(char *str);
-void print_err(char *name, int process_num, char *command);
+/* printing prototype function */
+int puts_(char *s);
+int putchar_(char ch);
 
 #endif
