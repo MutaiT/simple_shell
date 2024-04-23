@@ -1,1 +1,1 @@
-Simple shell ALX Software Engineering milestone project
+Simple Shell ALX Software Engineering Milestone Project

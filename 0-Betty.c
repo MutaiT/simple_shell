@@ -4,9 +4,8 @@
 
 /**
  * main - Entry point
- *
- * Description: This is the main function of the program. It
- * prints "Hello, Betty!" to the standard output.
+ * Description: This is the main function of the program. 
+ * It prints "Hello, Betty!" to the standard output.
  *
  * Return: Always 0 (Success)
  */
